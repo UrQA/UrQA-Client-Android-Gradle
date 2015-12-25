@@ -1,10 +1,22 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+
+publish {
+    userOrg = 'urqa'
+    groupId = 'urqa.io'
+    artifactId = 'urqa-client'
+    publishVersion = '0.9.9'
+    desc = 'This is the client sdk for android application to report the crash to the UrQA server when the runtime exceptions or errors are occurred'
+    website = 'https://github.com/UrQA/UrQA-Client-Android-Gradle'
+    issueTracker = "${website}/issues"
+    repository = "${website}.git"
+}
 
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
 
@@ -12,7 +24,7 @@ buildscript {
 }
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -55,14 +67,14 @@ android {
 
 
 task deleteOldJar(type: Delete) {
-    delete 'release/UrQA-Client_0.99.jar'
+    delete 'release/urqa-client_0.9.9.jar'
 }
 
 task exportJar(type: Copy) {
     from('build/intermediates/bundles/release/')
     into('release/')
     include('classes.jar')
-    rename('classes.jar', 'UrQA-Client_0.99.jar')
+    rename('classes.jar', 'urqa-client_0.9.9.jar')
 }
 
 exportJar.dependsOn(deleteOldJar, build)

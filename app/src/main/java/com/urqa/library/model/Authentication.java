@@ -75,7 +75,7 @@ public class Authentication implements JsonInterface {
 
 
 	/**
-	 * @param id the id to set
+	 * @param deviceId the id to set
 	 */
 	public void setDeviceId(String deviceId) {
 		mDeviceId = deviceId;
