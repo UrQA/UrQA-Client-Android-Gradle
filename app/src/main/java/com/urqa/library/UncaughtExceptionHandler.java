@@ -1,8 +1,10 @@
 package com.urqa.library;
 
+import android.util.Log;
+
 import com.urqa.Collector.ErrorReport;
 import com.urqa.Collector.ErrorReportFactory;
-import com.urqa.common.SendErrorProcess;
+import com.urqa.common.Sender;
 import com.urqa.common.StateData;
 import com.urqa.rank.ErrorRank;
 
@@ -30,8 +32,10 @@ public class UncaughtExceptionHandler implements
 			ErrorReport report = ErrorReportFactory.CreateErrorReport(ex, "",
 					ErrorRank.Unhandle, StateData.AppContext);
 
-			SendErrorProcess process = new SendErrorProcess(report);
-			process.start();
+			//SendErrorProcess process = new SendErrorProcess(report);
+			//process.start();
+			Log.e("hhs", "-------------------------------------------------->");
+			Sender.sendException(report, "http://ur-qa.com/urqa/client/send/exception");
 
 			if (mUncaughtExceptionHandler != null)
 				mUncaughtExceptionHandler.uncaughtException(thread, ex);

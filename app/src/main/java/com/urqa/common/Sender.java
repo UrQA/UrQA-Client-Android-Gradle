@@ -1,7 +1,7 @@
 package com.urqa.common;
 
 import android.os.Handler;
-import android.os.Message;
+import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
 
@@ -31,21 +31,34 @@ public class Sender {
         network.start();
     }
 
-    public static void sendException(ErrorReport report, String url)
+    public static void sendException(final ErrorReport report, final String url)
             throws JSONException {
 
-        Handler handler = new Handler() {
-            public void handleMessage(Message msg) {
-                String response = (String)msg.obj;
-                Log.e(StateData.URQA_SDK_LOG, response);
-            }
-        };
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // 내용
+                Network network = new Network();
+                try {
+                    network.setNetworkOption(url, makeJsonStr(report), Network.Method.POST, StateData.isEncrypt);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    Log.e(StateData.URQA_SDK_LOG, makeJsonStr(report));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                network.start();
 
-        Network network = new Network();
-        network.setNetworkOption(url, makeJsonStr(report), Network.Method.POST, StateData.isEncrypt);
-        Log.e(StateData.URQA_SDK_LOG, makeJsonStr(report));
-        network.setHandler(handler);
-        network.start();
+            }
+        }, 0);
+
+
+
+
+
 
     }
 
